@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ура!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 35px;
+            background-image: url("https://i.pinimg.com/564x/ca/89/95/ca899527ebb7feb15808c985e28f6994.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: scroll;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(217, 212, 202, 0.9);
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button-container button {
+            width: 150px;
+            height: 50px;
+            background-color: rgba(50, 66, 125, 1);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size : 14px;
+        }
+
+        .button-container button:hover {
+            background-color: rgba(61, 93, 209, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ text }}</h1>
+        <div class="message">
+            <p></p>
+        </div>
+        <div class="button-container">
+    <button onclick="window.location.href = '/'">На главную</button>
+        </div>
+    </div>
+</body>
+</html>

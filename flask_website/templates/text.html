@@ -1,0 +1,85 @@
+<head>
+    <title>Текст</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 35px;
+            background-image: url("https://i.pinimg.com/564x/ca/89/95/ca899527ebb7feb15808c985e28f6994.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: scroll;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(217, 212, 202, 0.9);
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .cloud p {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .button-container button,
+        .button-container input[type="submit"] {
+            width: 150px;
+            height: 40px;
+            background-color: rgba(50, 66, 125, 1);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .button-container button:hover,
+        .button-container input[type="submit"]:hover {
+            background-color: rgba(61, 93, 209, 1);
+        }
+        .form-group {
+            margin-bottom: 35px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="submit"] {
+            background-color: rgba(50, 66, 125, 1);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: rgba(61, 93, 209, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cloud">
+            <p>{{ text }}</p>
+        </div>
+        <div class="button-container">
+            <button onclick="window.history.back()">Назад</button>
+            <form method="POST" action="/redirect">
+                <input type="hidden" name="text_input" value="{{ text }}">
+                <input type="submit" value="Далее">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

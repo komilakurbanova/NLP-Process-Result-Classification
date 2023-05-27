@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Загрузка аудиофайла</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 35px;
+            background-image: url("https://i.pinimg.com/564x/ca/89/95/ca899527ebb7feb15808c985e28f6994.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: scroll;
+        }
+
+        .alert {
+            position: relative;
+            top: 10px;
+            left: 70%;
+            animation: fadeOut 1s forwards;
+            transform: translateX(-50%);
+            z-index: 9999;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+}
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(217, 212, 202, 0.9);
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+ position: relative;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="file"] {
+            display: block;
+            padding: 20px;
+            font-size: 10px;
+            transform: scale(1.6);
+            margin-left: 50px;
+            margin-top: 30px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: rgba(50, 66, 125, 1);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 480px;
+            font-size: 14px;
+            position: relative;
+            top: -30px; /* Поднять кнопку вверх */
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: rgba(61, 93, 209, 1);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="box">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert"
+         style="background-color: rgba(224, 255, 255, 0.5);">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+<div class="container">
+    <h1>Загрузка аудиофайла</h1>
+    <form method="POST" enctype="multipart/form-data" action="/upload">
+        <div class="form-group">
+            <label for="audio_file">Выберите аудиофайл:</label>
+<!--            <input type="file" name="audio_file" id="audio_file">-->
+            <input type="file" name="audio_file" id="audio_file" accept=".mp3, .wav, .flac">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Загрузить">
+        </div>
+    </form>
+
+    <!-- Manual text input form -->
+    <form method="POST" action="/manual">
+        <div class="form-group">
+            <label for="text_input">Введите текст:</label>
+            <textarea name="text_input" id="text_input" rows="10" cols="80"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

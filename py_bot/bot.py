@@ -28,10 +28,10 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 
-with open('gb_clf_tf.pkl', 'rb') as f:
+with open('NLP-Process-Result-Classification/gb_clf_tf.pkl', 'rb') as f:
     model = pickle.load(f)
 
-with open('vectorizer.pkl', 'rb') as f:
+with open('NLP-Process-Result-Classification/vectorizer.pkl', 'rb') as f:
     tfidf_vectorizer = pickle.load(f)
 
 classes = {0: 'process', 1: 'result'}
