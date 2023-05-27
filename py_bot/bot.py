@@ -1,97 +1,12 @@
 import logging
 import os
-import pickle
-import re
-import pymorphy2
-import speech_recognition as sr
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem.snowball import SnowballStemmer
-from pydub import AudioSegment
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
-
-import nltk
-
-# import ssl
-# try:
-#     _create_unverified_https_context = ssl._create_unverified_context
-# except AttributeError:
-#     pass
-# else:
-#     ssl._create_default_https_context = _create_unverified_https_context
-#
-nltk.download('punkt')
-nltk.download('stopwords')
-
-
-with open('NLP-Process-Result-Classification/gb_clf_tf.pkl', 'rb') as f:
-    model = pickle.load(f)
-
-with open('NLP-Process-Result-Classification/vectorizer.pkl', 'rb') as f:
-    tfidf_vectorizer = pickle.load(f)
-
-classes = {0: 'process', 1: 'result'}
-
-
-def preprocess_text(text):
-    morph = pymorphy2.MorphAnalyzer()
-
-    text = text.lower()
-
-    text = re.sub(r"[^\w\s]", "", text)
-
-    tokens = word_tokenize(text)
-    stop_words = set(stopwords.words('russian'))
-
-    lemmatized_tokens = []
-    for token in tokens:
-        parsed_token = morph.parse(token)[0]
-        if 'VERB' in parsed_token.tag:
-            lemmatized_tokens.append(parsed_token.tag.aspect)
-        if parsed_token.normal_form.isdigit():
-            lemmatized_tokens.append('num')
-
-        if not parsed_token.normal_form.isdigit() and parsed_token.normal_form not in stop_words:
-            lemma = SnowballStemmer('russian').stem(parsed_token.normal_form)
-            lemmatized_tokens.append(lemma)
-
-    processed_text = ' '.join(lemmatized_tokens)
-    return processed_text
-
-
-def predict_methaprog(sentence):
-    sentence_processed = preprocess_text(sentence)
-    sentence_tf = tfidf_vectorizer.transform([sentence_processed])
-    prediction = model.predict(sentence_tf)
-    return classes[prediction[0]]
-
-
-def convert_to_wav(input_file, output_file):
-    try:
-        audio = AudioSegment.from_file(input_file)
-        audio.export(output_file, format='wav')
-        return True
-    except Exception as e:
-        print(f"Error occurred during audio conversion: {str(e)}")
-
-    return False
-
-
-def transcribe_audio(file_name):
-    recognizer = sr.Recognizer()
-    with sr.AudioFile(file_name) as source:
-        audio = recognizer.record(source)
-    try:
-        transcription = recognizer.recognize_google(audio, language="ru-RU")
-        return transcription
-    except sr.UnknownValueError:
-        return "Не удалось распознать речь"
-    except sr.RequestError:
-        return "Произошла ошибка при обращении к сервису распознавания речи"
+from model.predicting import predict_methaprog
+from audio_recognizer.convert_transcribe import convert_to_wav, transcribe_audio
 
 
 logging.basicConfig(level=logging.INFO)
@@ -143,8 +58,13 @@ async def handle_voice_message(message: types.Message, state: FSMContext):
                          f"Это может занять время!")
 
     transcription = transcribe_audio(wav_file_name)
+    if transcription == "Не удалось распознать речь":
+        await message.reply(f"{transcription}!")
+        os.remove(file_name)
+        os.remove(wav_file_name)
+        return
 
-    await message.reply(f"Ответ:  {predict_methaprog(transcription)} \n\n  Текстовая версия:\n\n{transcription}")
+    await message.reply(f"Ответ:  {predict_methaprog(transcription)} \n\n\nТекстовая версия:\n{transcription}")
 
     os.remove(file_name)
     os.remove(wav_file_name)

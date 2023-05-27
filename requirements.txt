@@ -1,0 +1,6 @@
+aiogram==2.25.1
+Flask==2.3.2
+nltk==3.8.1
+pydub==0.25.1
+pymorphy2==0.9.1
+SpeechRecognition==3.10.0
