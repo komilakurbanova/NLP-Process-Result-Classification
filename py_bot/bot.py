@@ -12,7 +12,7 @@ from audio_recognizer.convert_transcribe import convert_to_wav, transcribe_audio
 logging.basicConfig(level=logging.INFO)
 input_text = False
 
-bot_token = ''
+bot_token = os.getenv('BOT_TOKEN')
 bot = Bot(token=bot_token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
