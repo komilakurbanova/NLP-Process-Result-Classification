@@ -12,18 +12,11 @@ from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_sp
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# import ssl
-# try:
-#     _create_unverified_https_context = ssl._create_unverified_context
-# except AttributeError:
-#     pass
-# else:
-#     ssl._create_default_https_context = _create_unverified_https_context
-#
 nltk.download('punkt')
 nltk.download('stopwords')
 
-data = pd.read_csv("data.csv")
+
+data = pd.read_csv("model/data.csv")
 
 def preprocess_text(text):
     morph = pymorphy2.MorphAnalyzer()
@@ -108,8 +101,8 @@ print()
 accuracy, precision, recall, f1 = get_metrics(y_test, y_predicted_tf)
 print("accuracy = %.5f, precision = %.5f, recall = %.5f, f1 = %.5f" % (accuracy, precision, recall, f1))
 
-with open('gb_clf_tf.pkl', 'wb') as f:
+with open('model/gb_clf_tf.pkl', 'wb') as f:
     pickle.dump(gb_clf_tf, f)
 
-with open('vectorizer.pkl', 'wb') as f:
+with open('model/vectorizer.pkl', 'wb') as f:
     pickle.dump(tfidf_vectorizer, f)
